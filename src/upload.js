@@ -8,23 +8,25 @@ import {
   Alert,
   Image,
   ActivityIndicator,
-} from
- 
-'react-native';
-import * as ImagePicker from
- 
-'expo-image-picker';
+} from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { firebase } from '../config';
 import * as FileSystem from 'expo-file-system';
 import { useNavigation } from '@react-navigation/native'; // Import the useNavigation hook
 import DownloadFile from './download';
 import { Swipeable } from 'react-native-gesture-handler';
+import { Dropdown } from 'react-native-element-dropdown';
+import AntDesign from '@expo/vector-icons/AntDesign';
+
 
 const UploadMediaFile = () => {
   const navigation = useNavigation(); // Access the navigation object
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [value, setValue] = useState(null);
+  const [isFocus, setIsFocus] = useState(false);
+
 
   const takePhoto = async () => {
     let result = await ImagePicker.launchCameraAsync({
@@ -84,34 +86,97 @@ const UploadMediaFile = () => {
 
     // change the colour of the button
 
-    <TouchableOpacity style={[styles.uploadButton, backgroundColor = "green"]} onPress={navigateToDownload}>
+    <TouchableOpacity style={[styles.someButton, backgroundColor = "green"]} onPress={navigateToDownload}>
       <Text style={styles.buttonText}>Download</Text>
     </TouchableOpacity>
   );
 
+  const renderLabel = () => {
+    if (value || isFocus) {
+      return (
+        <Text style={[styles.label, isFocus && { color: 'blue' }]}>
+          Dropdown label
+        </Text>
+      );
+    }
+    return null;
+  };
+
+
+  const data = [
+    { label: 'Item 1', value: '1' },
+    { label: 'Item 2', value: '2' },
+    { label: 'Item 3', value: '3' },
+    { label: 'Item 4', value: '4' },
+    { label: 'Item 5', value: '5' },
+    { label: 'Item 6', value: '6' },
+    { label: 'Item 7', value: '7' },
+    { label: 'Item 8', value: '8' },
+  ];
+
   return (
     <SafeAreaView style={styles.container}>
+
+<View style={{ height: 40 }} />
+<Text style={styles.usernameText}>Rithin Chand</Text>
+
+<View style={styles.containerWithoutCentering}>
+      {renderLabel()}
+      <Dropdown
+          style={[styles.dropdown, isFocus && { borderColor: 'blue' }, { overflow: 'visible' }]}
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
+        inputSearchStyle={styles.inputSearchStyle}
+        iconStyle={styles.iconStyle}
+        data={data}
+        search
+        maxHeight={300}
+        labelField="label"
+        valueField="value"
+        placeholder={!isFocus ? 'Select item' : '...'}
+        searchPlaceholder="Search..."
+        value={value}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        onChange={item => {
+          setValue(item.value);
+          setIsFocus(false);
+        }}
+        renderLeftIcon={() => (
+          <AntDesign
+            style={styles.icon}
+            color={isFocus ? 'blue' : 'black'}
+            name="Safety"
+            size={20}
+          />
+        )}
+      />
+    </View>
+
+    <View style={{ height: 40 }} />
       
-      <Text style={styles.usernameText}>Rithin Chand</Text>
-      <View style={{ height: 200}}/>
-      <View style={styles.mainContent}>
+    <View style={{ alignItems: 'center' }}>
+    {image && <Image source={{ uri: image }} style={{ width: 300, height: 300 }} />}
+   </View>
+
+        
+      <View style={styles.imageContainer}>
         <TouchableOpacity style={styles.selectButton} onPress={takePhoto}>
-          <Text style={styles.buttonText}>Take a Photo</Text>
+          <Text style={styles.buttonText}>Take Photo</Text>
         </TouchableOpacity>
 
-        <View style={styles.imageContainer}>
-          {image && <Image source={{ uri: image }} style={{ width: 300, height: 300 }} />}
+          
           <Swipeable renderLeftActions={renderLeftActions}>
             <TouchableOpacity style={styles.uploadButton} onPress={uploadMedia} disabled={uploading}>
               {uploading ? (
                 <ActivityIndicator size="large" color="#fff" />
               ) : (
-                <Text style={styles.buttonText}>Upload image</Text>
+                <Text style={styles.buttonText}>Upload</Text>
               )}
             </TouchableOpacity>
           </Swipeable>
         </View>
-      </View>
+      
     </SafeAreaView>
   );
 };
@@ -122,20 +187,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   usernameText: {
     fontSize: 35,
     color: '#333',
     fontWeight: 'bold',
-    
+    textAlign: 'center',
+    marginBottom: 30,
     
   },
+
   selectButton: {
     borderRadius: 5,
-    width: 150,
-    height: 150,
+    width: 90,
+    height: 90,
     backgroundColor: 'blue',
     alignItems: 'center',
     justifyContent: 'center',
@@ -149,18 +216,20 @@ const styles = StyleSheet.create({
 
   uploadButton: {
     borderRadius: 5,
-    width: 150,
-    height: 150,
+    width: 90,
+    height: 90,
     backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
+    // marginTop: 20,
   },
 
   imageContainer: {
-    marginTop: 30,
-    marginBottom: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 35,
+    marginTop: 50,
   },
 
   leftAction: {
@@ -179,6 +248,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 30,
     
+  },
+
+  someButton:{
+    borderRadius: 5,
+    width: 90,
+    height: 90,
+    backgroundColor: 'green',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
 });
