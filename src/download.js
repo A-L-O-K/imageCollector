@@ -30,7 +30,7 @@ const DownloadFile = () => {
     if (value || isFocus) {
       return (
         <Text style={[styles.label, isFocus && { color: 'blue' }]}>
-          Dropdown label
+          Select among the Following Shandhas
         </Text>
       );
     }
@@ -73,8 +73,8 @@ const DownloadFile = () => {
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!isFocus ? 'Select item' : '...'}
-          searchPlaceholder="Search..."
+          placeholder={!isFocus ? 'Select item (चुनें)' : '...'}
+          searchPlaceholder="Search (खोज)..."
           value={value}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
@@ -100,6 +100,9 @@ const DownloadFile = () => {
       <Text style={styles.instructions}>
         Select the number of images you want to download
       </Text>
+      <Text style={styles.instructions}>
+        उन छवियों की संख्या चुनें जिन्हें आप डाउनलोड करना चाहते हैं
+      </Text>
 
       <Slider
         style={styles.slider}
@@ -117,6 +120,7 @@ const DownloadFile = () => {
 
       <TouchableOpacity style={styles.downloadButton} onPress={downloadFile}>
         <Text style={styles.buttonText}>Download</Text>
+        <Text style={styles.buttonText}>डाउनलोड करना</Text>
       </TouchableOpacity>
     </View>
     </View>

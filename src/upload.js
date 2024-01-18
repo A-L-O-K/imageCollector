@@ -88,6 +88,7 @@ const UploadMediaFile = () => {
 
     <TouchableOpacity style={[styles.someButton, backgroundColor = "green"]} onPress={navigateToDownload}>
       <Text style={styles.buttonText}>Download</Text>
+      <Text style={styles.buttonText}>डाउनलोड</Text>
     </TouchableOpacity>
   );
 
@@ -95,7 +96,7 @@ const UploadMediaFile = () => {
     if (value || isFocus) {
       return (
         <Text style={[styles.label, isFocus && { color: 'blue' }]}>
-          Dropdown label
+          Select among the Following Shandhas
         </Text>
       );
     }
@@ -144,8 +145,8 @@ const UploadMediaFile = () => {
         maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder={!isFocus ? 'Select item' : '...'}
-        searchPlaceholder="Search..."
+        placeholder={!isFocus ? 'Select item (चुनें)' : '...'}
+        searchPlaceholder="Search (खोज)..."
         value={value}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
@@ -182,12 +183,20 @@ const UploadMediaFile = () => {
               {uploading ? (
                 <ActivityIndicator size="large" color="#fff" />
               ) : (
-                <Text style={styles.buttonText}>Upload</Text>
+                <Text style={styles.buttonText}>Upload <Text style={styles.buttonText}>अपलोड</Text></Text>
+                
               )}
             </TouchableOpacity>
           </Swipeable>
+          
         </View>
-      
+        <View style={{ height: 40 }} />
+        <Text style={styles.instructions}>
+        To download the images, swipe right on the upload button
+      </Text>
+      <Text style={styles.instructions}>
+      छवियां डाउनलोड करने के लिए, अपलोड बटन पर बाईं ओर स्वाइप करें
+      </Text>
     </SafeAreaView>
   );
 };
