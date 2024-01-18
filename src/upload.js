@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -20,31 +20,11 @@ import { useNavigation } from '@react-navigation/native'; // Import the useNavig
 import DownloadFile from './download';
 import { Swipeable } from 'react-native-gesture-handler';
 
-useEffect(() => {
-  // Fetch user information and set the username
-  const fetchUserData = async () => {
-    try {
-      // Assuming you have a function to get the user information from Firebase Auth
-      const user = await firebase.auth().currentUser;
-      if (user) {
-        setUsername(user.displayName);
-      }
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  };
-
-  fetchUserData();
-}, []);
-
-
-
 const UploadMediaFile = () => {
   const navigation = useNavigation(); // Access the navigation object
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [username, setUsername] = useState(null);
 
   const takePhoto = async () => {
     let result = await ImagePicker.launchCameraAsync({
@@ -111,13 +91,13 @@ const UploadMediaFile = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-
-      <Text style={styles.usernameText}>Username: {username}</Text>
       
+      <Text style={styles.usernameText}>Rithin Chand</Text>
+      <View style={{ height: 200}}/>
+      <View style={styles.mainContent}>
         <TouchableOpacity style={styles.selectButton} onPress={takePhoto}>
           <Text style={styles.buttonText}>Take a Photo</Text>
         </TouchableOpacity>
-        
 
         <View style={styles.imageContainer}>
           {image && <Image source={{ uri: image }} style={{ width: 300, height: 300 }} />}
@@ -131,7 +111,7 @@ const UploadMediaFile = () => {
             </TouchableOpacity>
           </Swipeable>
         </View>
-      
+      </View>
     </SafeAreaView>
   );
 };
@@ -143,15 +123,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    
   },
-  
   usernameText: {
-    fontSize: 16,
+    fontSize: 35,
     color: '#333',
-    marginBottom: 10,
+    fontWeight: 'bold',
+    
+    
   },
-
   selectButton: {
     borderRadius: 5,
     width: 150,
