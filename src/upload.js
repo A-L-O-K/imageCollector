@@ -104,14 +104,23 @@ const UploadMediaFile = () => {
 
 
   const data = [
-    { label: 'Item 1', value: '1' },
-    { label: 'Item 2', value: '2' },
-    { label: 'Item 3', value: '3' },
-    { label: 'Item 4', value: '4' },
-    { label: 'Item 5', value: '5' },
-    { label: 'Item 6', value: '6' },
-    { label: 'Item 7', value: '7' },
-    { label: 'Item 8', value: '8' },
+    { label: 'अ', value: '1' },
+    { label: 'आ', value: '2' },
+    { label: 'इ', value: '3' },
+    { label: 'ई ', value: '4' },
+    { label: 'उ ', value: '5' },
+    { label: 'ऊ', value: '6' },
+    { label: 'ऋ', value: '7' },
+    { label: 'ऌ', value: '8' },
+    { label: 'ए', value: '8' },
+    { label: 'ऐ', value: '8' },
+    { label: 'ओ', value: '8' },
+    { label: 'औ', value: '8' },
+    { label: '।', value: '8' },
+    { label: '॥', value: '8' },
+    { label: 'ऽ', value: '8' },
+    { label: '॰', value: '8' },
+    { label: 'ॐ', value: '8' },
   ];
 
   return (
@@ -119,6 +128,8 @@ const UploadMediaFile = () => {
 
 <View style={{ height: 40 }} />
 <Text style={styles.usernameText}>Rithin Chand</Text>
+<Text style={styles.usernameText}>रिथिन॔ छंद  </Text>
+
 
 <View style={styles.containerWithoutCentering}>
       {renderLabel()}
