@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import Slider from 'react-native-slider';
 import { firebase } from '../config';
-import { Picker } from '@react-native-picker/picker';
+import { Dropdown } from 'react-native-element-dropdown';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 const DownloadFile = () => {
   const [sliderValue, setSliderValue] = useState(10);
-  const [selectedAlphabet, setSelectedAlphabet] = useState('A'); // Initial value 'A'
+  const [value, setValue] = useState(null);
+  const [isFocus, setIsFocus] = useState(false);
+
 
   const downloadFile = async () => {
     // try {
@@ -23,19 +26,67 @@ const DownloadFile = () => {
     console.log('Number of Images:', sliderValue);
   };
 
+  const renderLabel = () => {
+    if (value || isFocus) {
+      return (
+        <Text style={[styles.label, isFocus && { color: 'blue' }]}>
+          Dropdown label
+        </Text>
+      );
+    }
+    return null;
+  };
+
+
+  const data = [
+    { label: 'Item 1', value: '1' },
+    { label: 'Item 2', value: '2' },
+    { label: 'Item 3', value: '3' },
+    { label: 'Item 4', value: '4' },
+    { label: 'Item 5', value: '5' },
+    { label: 'Item 6', value: '6' },
+    { label: 'Item 7', value: '7' },
+    { label: 'Item 8', value: '8' },
+  ];
+
   return (
     <View style={styles.container}>
-      {/* Dropdown for selecting alphabet */}
-      <Picker
-        selectedValue={selectedAlphabet}
-        onValueChange={(itemValue) => setSelectedAlphabet(itemValue)}
-        style={styles.picker}
-      >
-        {/* Add all alphabets from A to Z */}
-        {Array.from({ length: 26 }, (_, index) => String.fromCharCode(65 + index)).map((alphabet) => (
-          <Picker.Item key={alphabet} label={alphabet} value={alphabet} color='black'/>
-        ))}
-      </Picker>
+      <View style={styles.containerWithoutCentering}>
+        {renderLabel()}
+        <Dropdown
+            style={[styles.dropdown, isFocus && { borderColor: 'blue' }, { overflow: 'visible' }]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={data}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? 'Select item' : '...'}
+          searchPlaceholder="Search..."
+          value={value}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={item => {
+            setValue(item.value);
+            setIsFocus(false);
+          }}
+          renderLeftIcon={() => (
+            <AntDesign
+              style={styles.icon}
+              color={isFocus ? 'blue' : 'black'}
+              name="Safety"
+              size={20}
+            />
+          )}
+        />
+      </View>
+
+      <View style={{ height: 80 }} />
+    <View style={styles.container}>
+
 
       <Text style={styles.instructions}>
         Select the number of images you want to download
@@ -59,20 +110,24 @@ const DownloadFile = () => {
         <Text style={styles.buttonText}>Download</Text>
       </TouchableOpacity>
     </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  containerWithoutCentering: {
+
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     padding: 20,
   },
 
   instructions: {
-    fontSize: 18,
+    fontSize: 12,
     marginBottom: 20,
   },
 
@@ -99,13 +154,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#fff',
     fontWeight: 'bold',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
   },
 
-  picker: {
-    height: 50,
-    width: 100,
-    marginBottom: 20,
-  },
 });
 
 export default DownloadFile;
