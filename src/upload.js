@@ -129,7 +129,7 @@ const UploadMediaFile = () => {
 
 <View style={{ height: 40 }} />
 <Text style={styles.usernameText}>Rithin Chand</Text>
-<Text style={styles.usernameText}>रिथिन॔ छंद  </Text>
+<Text style={styles.usernameText}>रीथीन चंद </Text>
 
 
 <View style={styles.containerWithoutCentering}>
@@ -190,7 +190,7 @@ const UploadMediaFile = () => {
           </Swipeable>
           
         </View>
-        <View style={{ height: 40 }} />
+        <View style={{ height: 20 }} />
         <Text style={styles.instructions}>
         To download the images, swipe right on the upload button
       </Text>
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     color: '#333',
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 30,
+    
     
   },
 
