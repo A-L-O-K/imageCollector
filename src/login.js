@@ -25,7 +25,10 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      
+<Text style={styles.usernameText}>CSDCA</Text>
+
+      <Text style={styles.title}>Login लॉगिन </Text>
 
       <TextInput
         style={styles.input}
@@ -50,7 +53,7 @@ const LoginScreen = ({ navigation }) => {
       <View style={{ height: 20 }} />
 
       <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+        <Text style={styles.buttonText}>Login लॉगिन </Text>
       </TouchableOpacity>
 
       
@@ -68,6 +71,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     backgroundColor: '#f5f5f5', // Light background color
+  },
+  usernameText: {
+    fontSize: 35,
+    color: '#ff9933',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 30,
+    
   },
   title: {
     fontSize: 24,
