@@ -67,14 +67,11 @@ const UploadMediaFile = () => {
 
         await ref.put(blob);
 
-        // Get the download URL of the uploaded image
         const downloadURL = await ref.getDownloadURL();
 
-        // Add the image URL to Firestore
-        var washingtonRef = db.collection("links").doc(value);
+        var docRef = db.collection("links").doc(value);
 
-        // Atomically add a new region to the "regions" array field.
-        washingtonRef.update({
+        docRef.update({
           imageurls: firebase.firestore.FieldValue.arrayUnion(downloadURL),
         });
 
@@ -130,15 +127,15 @@ const UploadMediaFile = () => {
     { label: "ऊ", value: "6" },
     { label: "ऋ", value: "7" },
     { label: "ऌ", value: "8" },
-    { label: "ए", value: "8" },
-    { label: "ऐ", value: "8" },
-    { label: "ओ", value: "8" },
-    { label: "औ", value: "8" },
-    { label: "।", value: "8" },
-    { label: "॥", value: "8" },
-    { label: "ऽ", value: "8" },
-    { label: "॰", value: "8" },
-    { label: "ॐ", value: "8" },
+    { label: "ए", value: "9" },
+    { label: "ऐ", value: "10" },
+    { label: "ओ", value: "11" },
+    { label: "औ", value: "12" },
+    { label: "।", value: "13" },
+    { label: "॥", value: "14" },
+    { label: "ऽ", value: "15" },
+    { label: "॰", value: "16" },
+    { label: "ॐ", value: "17" },
   ];
 
   return (

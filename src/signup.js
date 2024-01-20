@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import LoginScreen from './login';
 // import navigation
 import { NavigationContainer, navigation, navigate } from '@react-navigation/native';
+import { auth } from '../config';
 
 const SignUpScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -14,12 +15,24 @@ const SignUpScreen = ({ navigation }) => {
     console.log('Username:', username);
     console.log('Password:', password);
     console.log('Retype Password:', retypePassword);
+
+    auth.createUserWithEmailAndPassword(username, password)
+    .then((userCred) => {
+      console.log("User created! : ", userCred.user.uid);
+      Alert.alert("User created!");
+      navigation.navigate('LoginScreen');
+    })
+    .catch((error) => {
+      // Handle errors
+      var errorCode = error.code;
+      var errorMessage = error.message;
+
+      console.log("Error creating user: ", errorCode, errorMessage);
+    });
   };
 
   const navigateToSignIn = () => {
     navigation.navigate('LoginScreen');
-
-
   };
 
   return (
