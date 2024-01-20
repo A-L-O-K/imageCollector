@@ -17,6 +17,9 @@ import DownloadFile from './download';
 import { Swipeable } from 'react-native-gesture-handler';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
+// import firestore
+import 'firebase/compat/firestore';
+
 
 
 const UploadMediaFile = () => {
@@ -24,7 +27,7 @@ const UploadMediaFile = () => {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState('');
   const [isFocus, setIsFocus] = useState(false);
 
 
@@ -57,11 +60,20 @@ const UploadMediaFile = () => {
         xhr.open('GET', uri, true);
         xhr.send(null);
       });
-
+  
       const filename = image.substring(image.lastIndexOf('/') + 1);
       const ref = firebase.storage().ref().child(filename);
-
+  
       await ref.put(blob);
+  
+      // Get the download URL of the uploaded image
+      const downloadURL = await ref.getDownloadURL();
+  
+      // Add the image URL to Firestore
+      await firebase.firestore().collection('links').doc(value).set({
+        imageURL: downloadURL,
+      });
+  
       setUploading(false);
       Alert.alert('Image Uploaded!');
       setImage(null);
@@ -71,6 +83,7 @@ const UploadMediaFile = () => {
       Alert.alert('Error uploading image');
     }
   };
+  
 
   
 
