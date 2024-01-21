@@ -5,7 +5,8 @@ import 'firebase/compat/auth';
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDg6fc70n93Jv0dG8H-BbbNSYFdb4pP6zA",
+    apiKey:
+    "AIzaSyDg6fc70n93Jv0dG8H-BbbNSYFdb4pP6zA",
     authDomain: "ceo-complete-each-other.firebaseapp.com",
     projectId: "ceo-complete-each-other",
     storageBucket: "ceo-complete-each-other.appspot.com",

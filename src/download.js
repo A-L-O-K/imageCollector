@@ -7,11 +7,8 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../config";
 import { getStorage, ref, listAll } from "firebase/storage";
-// import { getStorage, ref, listAll } from "firebase/storage";
-
-import JSZip from "jszip";
-
-// import { doc, getDoc } from "firebase/firestore";
+import * as FileSystem from "expo-file-system";
+import * as MediaLibrary from "expo-media-library";
 
 const DownloadFile = () => {
   const [sliderValue, setSliderValue] = useState(10);
@@ -19,29 +16,6 @@ const DownloadFile = () => {
   const [isFocus, setIsFocus] = useState(false);
 
   const downloadFile = async () => {
-    // try {
-    //   const filename = `${selectedAlphabet}_your_filename_here`;
-    //   const url = await firebase.storage().ref().child(filename).getDownloadURL();
-    //   Alert.alert('Download URL:', url);
-    // } catch (error) {
-    //   console.error(error);
-    //   Alert.alert('Error downloading file');
-    // }
-
-    // print the selected alphabet and the number of images to download
-    // get doc from firestore
-
-    // const docRef = doc(db, "links", value);
-    // const docSnap = await getDoc(docRef);
-
-    // if (docSnap.exists()) {
-    //   console.log("Document data:", docSnap.data());
-    // } else {
-    //   // docSnap.data() will be undefined in this case
-    //   console.log("No such document!");
-    // }
-
-    // -----------------------------
     if (value == null) {
       Alert.alert("Please select a Shabdha");
     } else {
@@ -52,8 +26,8 @@ const DownloadFile = () => {
         .then((doc) => {
           if (doc.exists) {
             console.log("Document data:", doc.data());
+            downloadImage(doc.data().imageurls);
           } else {
-            // doc.data() will be undefined in this case
             console.log("No such document!");
           }
         })
@@ -61,9 +35,30 @@ const DownloadFile = () => {
           console.log("Error getting document:", error);
         });
     }
-    // console.log("Selected Alphabet:", selectedAlphabet);
+
     console.log("Number of Images:", sliderValue);
   };
+
+  async function downloadImage(images) {
+    try {
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+      if (status === "granted") {
+        for (let i = 0; i < images.length; i++) {
+          const fileUri = FileSystem.documentDirectory + images[i].split("/").pop();
+          console.log("File URI:", fileUri);
+          const downloadResumable = FileSystem.createDownloadResumable(images[i], fileUri,{},false);
+          const { uri } = await downloadResumable.downloadAsync(null,{shouldCache:false});
+          console.log("Finished downloading to ", uri);
+          const asset = await MediaLibrary.createAssetAsync(uri);
+          console.log("Asset:", asset);
+          Alert.alert("Downloaded", "Downloaded Successfully");
+        }
+      }
+      
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   const renderLabel = () => {
     if (value || isFocus) {
