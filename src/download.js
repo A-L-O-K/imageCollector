@@ -61,7 +61,7 @@ const DownloadFile = () => {
           console.log("Error getting document:", error);
         });
     }
-    console.log("Selected Alphabet:", selectedAlphabet);
+    // console.log("Selected Alphabet:", selectedAlphabet);
     console.log("Number of Images:", sliderValue);
   };
 
@@ -69,7 +69,7 @@ const DownloadFile = () => {
     if (value || isFocus) {
       return (
         <Text style={[styles.label, isFocus && { color: "blue" }]}>
-          Select among the Following Shandhas
+          Select among the Following Shabdhas
         </Text>
       );
     }

@@ -30,11 +30,11 @@ const UploadMediaFile = () => {
   const [isFocus, setIsFocus] = useState(false);
 
   const takePhoto = async () => {
-    let result = await ImagePicker.launchCameraAsync({
+    const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.5, // Adjust the quality as needed
     });
 
     if (!result.cancelled) {
@@ -47,6 +47,7 @@ const UploadMediaFile = () => {
     try {
       if (value == null) {
         Alert.alert("Please select a Shabdha");
+        setUploading(false);
       } else {
         const { uri } = await FileSystem.getInfoAsync(image);
         const blob = await new Promise((resolve, reject) => {
@@ -85,6 +86,12 @@ const UploadMediaFile = () => {
       Alert.alert("Error uploading image");
     }
   };
+  
+  const compressImage = async (uri) => {
+    // Use react-native-image-picker's resize method for compression
+    const resizedImage = await ImagePicker.resize(uri, { width: 800 });
+    return resizedImage.uri;
+  };
 
   const navigateToDownload = () => {
     navigation.navigate("DownloadFile");
@@ -111,7 +118,7 @@ const UploadMediaFile = () => {
     if (value || isFocus) {
       return (
         <Text style={[styles.label, isFocus && { color: "blue" }]}>
-          Select among the Following Shandhas
+          Select among the Following Shabdhas
         </Text>
       );
     }

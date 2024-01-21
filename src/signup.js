@@ -16,19 +16,31 @@ const SignUpScreen = ({ navigation }) => {
     console.log('Password:', password);
     console.log('Retype Password:', retypePassword);
 
-    auth.createUserWithEmailAndPassword(username, password)
-    .then((userCred) => {
-      console.log("User created! : ", userCred.user.uid);
-      Alert.alert("User created!");
-      navigation.navigate('LoginScreen');
-    })
-    .catch((error) => {
-      // Handle errors
-      var errorCode = error.code;
-      var errorMessage = error.message;
+    try {
+        if(password === retypePassword){
+          auth.createUserWithEmailAndPassword(username, password)
+        .then((userCred) => {
+          console.log("User created! : ", userCred.user.email);
+          Alert.alert("User created!");
+          navigation.navigate('LoginScreen');
+        })
+        .catch((error) => {
+          // Handle errors
+          var errorCode = error.code;
+          var errorMessage = error.message;
 
-      console.log("Error creating user: ", errorCode, errorMessage);
-    });
+          console.log("Error creating user:", errorCode, errorMessage);
+          // const match = /Firebase:\s(.*?)\s\(auth\/weak-password\)/.exec(errorMessage);
+          Alert.alert("Error :",errorCode);
+        });
+      }else{
+        throw new Error("Passwords do not match !");
+      }
+    }catch(error){
+      console.log("Error : ",error.message);
+      Alert.alert(error.message);
+    }
+    
   };
 
   const navigateToSignIn = () => {

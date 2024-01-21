@@ -30,6 +30,7 @@ const LoginScreen = ({ navigation }) => {
       var errorCode = error.code;
       var errorMessage = error.message;
       console.log("Error logging in: ", errorCode, errorMessage);
+      Alert.alert(error.code);
     });
   };
 
