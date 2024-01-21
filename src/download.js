@@ -1,16 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import Slider from "react-native-slider";
-import { firebase } from "../config";
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../config";
-import { getStorage, ref, listAll } from "firebase/storage";
-// import { getStorage, ref, listAll } from "firebase/storage";
-
-import JSZip from "jszip";
-
+window.navigator.userAgent = "ReactNative";
 // import { doc, getDoc } from "firebase/firestore";
 
 const DownloadFile = () => {
@@ -19,47 +13,22 @@ const DownloadFile = () => {
   const [isFocus, setIsFocus] = useState(false);
 
   const downloadFile = async () => {
-    // try {
-    //   const filename = `${selectedAlphabet}_your_filename_here`;
-    //   const url = await firebase.storage().ref().child(filename).getDownloadURL();
-    //   Alert.alert('Download URL:', url);
-    // } catch (error) {
-    //   console.error(error);
-    //   Alert.alert('Error downloading file');
-    // }
-
-    // print the selected alphabet and the number of images to download
-    // get doc from firestore
-
-    // const docRef = doc(db, "links", value);
-    // const docSnap = await getDoc(docRef);
-
-    // if (docSnap.exists()) {
-    //   console.log("Document data:", docSnap.data());
-    // } else {
-    //   // docSnap.data() will be undefined in this case
-    //   console.log("No such document!");
-    // }
-
-    // -----------------------------
     if (value == null) {
       Alert.alert("Please select a Shabdha");
     } else {
-      var docRef = db.collection("links").doc(value);
+      const docRef = db.collection("links").doc("2");
 
-      docRef
-        .get()
-        .then((doc) => {
+      try {
+        await docRef.get().then((doc) => {
           if (doc.exists) {
-            console.log("Document data:", doc.data());
+            console.log("Document data:", doc);
           } else {
-            // doc.data() will be undefined in this case
             console.log("No such document!");
           }
-        })
-        .catch((error) => {
-          console.log("Error getting document:", error);
         });
+      } catch (error) {
+        console.log(error);
+      }
     }
     console.log("Selected Alphabet:", selectedAlphabet);
     console.log("Number of Images:", sliderValue);
