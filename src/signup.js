@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import LoginScreen from './login';
 // import navigation
 import { NavigationContainer, navigation, navigate } from '@react-navigation/native';
+import { auth } from '../config';
 
 const SignUpScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -14,12 +15,36 @@ const SignUpScreen = ({ navigation }) => {
     console.log('Username:', username);
     console.log('Password:', password);
     console.log('Retype Password:', retypePassword);
+
+    try {
+        if(password === retypePassword){
+          auth.createUserWithEmailAndPassword(username, password)
+        .then((userCred) => {
+          console.log("User created! : ", userCred.user.email);
+          Alert.alert("User created!");
+          navigation.navigate('LoginScreen');
+        })
+        .catch((error) => {
+          // Handle errors
+          var errorCode = error.code;
+          var errorMessage = error.message;
+
+          console.log("Error creating user:", errorCode, errorMessage);
+          // const match = /Firebase:\s(.*?)\s\(auth\/weak-password\)/.exec(errorMessage);
+          Alert.alert("Error :",errorCode);
+        });
+      }else{
+        throw new Error("Passwords do not match !");
+      }
+    }catch(error){
+      console.log("Error : ",error.message);
+      Alert.alert(error.message);
+    }
+    
   };
 
   const navigateToSignIn = () => {
     navigation.navigate('LoginScreen');
-
-
   };
 
   return (

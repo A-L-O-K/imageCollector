@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert} from 'react-native';
+import { auth } from '../config';
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -10,13 +11,27 @@ const LoginScreen = ({ navigation }) => {
     console.log('Password:', password);
     // Implement your authentication logic here
 
-    if (username === "alok@gmail.com" && password === "12345678") {
-      // navigation.navigate('HomeScreen');
-      navigation.navigate('UploadMediaFile'); 
-    }
-    else{
-      Alert.alert('Incorrect Username or Password');
-    }
+    // if (username === "alok@gmail.com" && password === "12345678") {
+    //   // navigation.navigate('HomeScreen');
+    //   navigation.navigate('UploadMediaFile'); 
+    // }
+    // else{
+    //   Alert.alert('Incorrect Username or Password');
+    // }
+
+      auth.signInWithEmailAndPassword(username, password)
+    .then((userCredential) => {
+      // Signed in successfully
+      console.log("User logged in ! : ", userCredential.user.uid);
+      navigation.navigate('UploadMediaFile');
+    })
+    .catch((error) => {
+      // Handle errors
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log("Error logging in: ", errorCode, errorMessage);
+      Alert.alert(error.code);
+    });
   };
 
   const navigateToSignUp = () => {

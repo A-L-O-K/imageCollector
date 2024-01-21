@@ -1,23 +1,27 @@
 import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
+import 'firebase/compat/auth';
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyC0WtdiCRHpXPQ0JeMV6xYy3B4pcMV3AoQ",
-    authDomain: "crowd-sourcer.firebaseapp.com",
-    projectId: "crowd-sourcer",
-    storageBucket: "crowd-sourcer.appspot.com",
-    messagingSenderId: "822920257061",
-    appId: "1:822920257061:web:d0d24979ae0a91021429cc",
-    measurementId: "G-ZBYN6VXG44"
-}
+    apiKey: "AIzaSyDg6fc70n93Jv0dG8H-BbbNSYFdb4pP6zA",
+    authDomain: "ceo-complete-each-other.firebaseapp.com",
+    projectId: "ceo-complete-each-other",
+    storageBucket: "ceo-complete-each-other.appspot.com",
+    messagingSenderId: "926419851454",
+    appId: "1:926419851454:web:182e08c1d9b7315790e6ef",
+    measurementId: "G-CYMK2YEYKQ"
+  };
 
 
 
 if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+    const app=firebase.initializeApp(firebaseConfig);
+    
 }
 
-
-
+// export const firestore = firebase.firestore();
+export const db = firebase.firestore();
 export { firebase };
+export const auth = firebase.auth();
