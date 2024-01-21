@@ -1,11 +1,24 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  Platform,
+} from "react-native";
+
 import Slider from "react-native-slider";
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { db } from "../config";
+import * as FileSystem from "expo-file-system";
+import { zip } from "react-native-zip-archive"; // Import only the zip function
+
 window.navigator.userAgent = "ReactNative";
-// import { doc, getDoc } from "firebase/firestore";
+const { NativeEventEmitter, NativeModules } = ReactNative;
+const { RNZipArchive } = NativeModules;
+// const RNFS = require("react-native-fs");
 
 const DownloadFile = () => {
   const [sliderValue, setSliderValue] = useState(10);
@@ -16,21 +29,56 @@ const DownloadFile = () => {
     if (value == null) {
       Alert.alert("Please select a Shabdha");
     } else {
-      const docRef = db.collection("links").doc("2");
+      const docRef = db.collection("links").doc(value);
 
       try {
-        await docRef.get().then((doc) => {
-          if (doc.exists) {
-            console.log("Document data:", doc);
-          } else {
-            console.log("No such document!");
-          }
-        });
+        const doc = await docRef.get();
+        if (doc.exists) {
+          const images = doc.data().imageurls;
+          console.log("Document data:", doc);
+
+          // Choose the directory path for storing images based on the platform
+          const tempDir = Platform.select({
+            ios: `${FileSystem.documentDirectory}images`,
+            android: `${FileSystem.documentDirectory}images`,
+          });
+
+          // Ensure the directory exists
+          await FileSystem.makeDirectoryAsync(tempDir, { intermediates: true });
+
+          // Download images to the temporary directory
+          const downloadPromises = images.map(async (imageUrl, index) => {
+            const imagePath = `${tempDir}/image_${index}.jpg`;
+            const response = await FileSystem.downloadAsync(
+              imageUrl,
+              imagePath
+            );
+            return response.uri;
+          });
+
+          await Promise.all(downloadPromises);
+
+          // Specify the desired path for saving the zip file
+          const savePath = `${FileSystem.documentDirectory}myDownloadedFiles.zip`;
+
+          // Create a zip file from the downloaded images
+          await zip(
+            images.map((_, index) => `${tempDir}/image_${index}.jpg`),
+            savePath
+          );
+
+          console.log("Zip file created:", savePath);
+
+          // Now you can use the savePath as needed, for example, upload or share it.
+        } else {
+          console.log("No such document!");
+        }
       } catch (error) {
         console.log(error);
       }
     }
-    console.log("Selected Alphabet:", selectedAlphabet);
+
+    console.log("Selected Alphabet:", value);
     console.log("Number of Images:", sliderValue);
   };
 
@@ -141,8 +189,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    // alignItems: 'center',
-    // justifyContent: 'center',
     padding: 20,
   },
 
@@ -174,9 +220,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#fff",
     fontWeight: "bold",
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
   },
 });
 
