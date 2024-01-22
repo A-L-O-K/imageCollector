@@ -44,17 +44,26 @@ const DownloadFile = () => {
       const { status } = await MediaLibrary.requestPermissionsAsync();
       if (status === "granted") {
         for (let i = 0; i < images.length; i++) {
-          const fileUri = FileSystem.documentDirectory + images[i].split("/").pop();
+          // const fileUri = FileSystem.documentDirectory + images[i].split("/").pop();
+          // MAKE FILE PATH WITH  LABEL
+          const fileUri = FileSystem.documentDirectory + value + i + ".jpg";
           console.log("File URI:", fileUri);
-          const downloadResumable = FileSystem.createDownloadResumable(images[i], fileUri,{},false);
-          const { uri } = await downloadResumable.downloadAsync(null,{shouldCache:false});
+          const downloadResumable = FileSystem.createDownloadResumable(
+            images[i],
+            fileUri,
+            {},
+            false
+          );
+          const { uri } = await downloadResumable.downloadAsync(null, {
+            shouldCache: false,
+          });
           console.log("Finished downloading to ", uri);
           const asset = await MediaLibrary.createAssetAsync(uri);
           console.log("Asset:", asset);
           Alert.alert("Downloaded", "Downloaded Successfully");
         }
       }
-      
+      Alert.alert("COMPLETED DOWNLOAD THANKS TO PRANAV");
     } catch (e) {
       console.log(e);
     }
